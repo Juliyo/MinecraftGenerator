@@ -18,7 +18,7 @@ texturaHojas = sysInfo.currentdir + "\\texturas\arbolHojas.png"
 texturaHojasAlpha = sysInfo.currentdir + "\\texturas\arbolHojasAlpha.jpg"
 	
 texturaLadoTronco = sysInfo.currentdir + "\\texturas\maderaLado.jpg"
-	
+
 bitmapHojas = bitmaptexture filename: texturaHojas
 bitmapHojasAlpha = bitmaptexture filename: texturaHojasAlpha
 bitmapLadoTronco = bitmaptexture filename: texturaLadoTronco
@@ -91,7 +91,7 @@ fn rotaCuboAleatorio elemento i j = (
 
 
 fn creaArbol posX posY posZ tamaTronco tamaHojas = (
-	altura = 0
+	altura = posZ + tama
 	tronco
 	hojas
 	i=1
@@ -104,6 +104,7 @@ fn creaArbol posX posY posZ tamaTronco tamaHojas = (
 		tronco[i].pos.z = altura
 		tronco[i].material = matTronco
 		altura = altura + tama
+		
 	)
 	posXhojas = 0
 	posXhojas = (posX) +(2*tama)
@@ -191,7 +192,7 @@ fn generaArboles numArboles tamaTronco tamaHojas = (
 				print("Hola")
 				print(aleatorio)
 				if aleatorio == 5 then (
-					creaArbol i j terreno[i][j].pos.z tamaTronco tamaHojas
+					creaArbol terreno[i][j].pos.x terreno[i][j].pos.y terreno[i][j].pos.z tamaTronco tamaHojas
 					contador = contador + 1
 				)
 			)
