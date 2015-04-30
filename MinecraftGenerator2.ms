@@ -14,7 +14,7 @@ try (closeRolloutFloater RolloutNuevoTemplate) catch()
 
 rollout scriptFinal "Minecraft Map Generator (MMP)" width:270 height:501
 (
-
+nbv bnmn
 
 	GroupBox GrupoTerreno "Terreno" pos:[17,78] width:229 height:200
 	label lbl1 "Dimensión X" pos:[37,100] width:68 height:17
