@@ -5,7 +5,7 @@ dotnet.loadAssembly (sysInfo.currentdir +"\PerlinNoiseV2.dll")
 /*VARIABLES*/
 
 terreno=#(#())
-/*FIN VARIABLES*/
+
 
 
 
