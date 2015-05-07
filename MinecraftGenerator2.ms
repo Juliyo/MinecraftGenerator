@@ -184,20 +184,23 @@ fn creaArbol posX posY posZ tamaTronco tamaHojas = (
 fn generaArboles numArboles tamaTronco tamaHojas = (
 	contador = 0
 	aleatorio = 0
-	print(tamaTerrenoX)
-	for i = 1 to tamaTerrenoX do(
+	for i=0 to numArboles do(
+		ale1 = random 1 tamaTerrenoX
+		ale2 = random 1 tamaTerrenoY
+		creaArbol terreno[ale1][ale2].pos.x terreno[ale1][ale2].pos.y terreno[ale1][ale2].pos.z tamaTronco tamaHojas
+	)
+	
+	/*for i = 1 to tamaTerrenoX do(
 		for j = 1 to tamaTerrenoY do(
 			if contador < (int)numArboles then(
 				aleatorio = random 0 10
-				print("Hola")
-				print(aleatorio)
 				if aleatorio == 5 then (
 					creaArbol terreno[i][j].pos.x terreno[i][j].pos.y terreno[i][j].pos.z tamaTronco tamaHojas
 					contador = contador + 1
 				)
 			)
 		)
-	)
+	)*/
 )
 
 fn crearTerreno X Y tama altura frecuencia=  (
@@ -215,12 +218,12 @@ fn crearTerreno X Y tama altura frecuencia=  (
 		)
 		for j=1 to Y do(
 
-				-- script2 = dotNetObject "PerlinNoiseV2.Perlin" (10*(sqrt 5330)) (5)
-				-- script3 = dotNetObject "PerlinNoiseV2.Perlin" (5330*5330) (20)
-				-- print((12*(script.getNoiseLevelAtPosition i j))+(6*(script2.getNoiseLevelAtPosition i j))+(24*(script3.getNoiseLevelAtPosition i j)))
-				-- ruido = (12*(script.getNoiseLevelAtPosition i j))+(6*(script2.getNoiseLevelAtPosition i j))+(24*(script3.getNoiseLevelAtPosition i j))
+				 script2 = dotNetObject "PerlinNoiseV2.Perlin" (10*(sqrt 5330)) (5)
+				 script3 = dotNetObject "PerlinNoiseV2.Perlin" (5330*5330) (20)
+				 --print((12*(script.getNoiseLevelAtPosition i j))+(6*(script2.getNoiseLevelAtPosition i j))+(24*(script3.getNoiseLevelAtPosition i j)))
+				 ruido = (12*(script.getNoiseLevelAtPosition i j))+(6*(script2.getNoiseLevelAtPosition i j))+(24*(script3.getNoiseLevelAtPosition i j))
 			
-				ruido = 	script.getNoiseLevelAtPosition i j
+				--ruido = 	script.getNoiseLevelAtPosition i j
 				if i==1 and j==1 then(
 					terreno[i][j]=Box lengthsegs:1 widthsegs:1 heighsegs:1 length:tama width:tama height:tama pos:[posX ,posY,ruido]  mapcoords:on  material:matGrass
 				)else(
@@ -237,6 +240,7 @@ fn crearTerreno X Y tama altura frecuencia=  (
 		posY = 0
 	)
 	--intervalo=1.0/altura
+	
 		for i=1 to X do(
 		for j=1 to Y do(
 			if i==1 and j==1 do(
@@ -250,7 +254,7 @@ fn crearTerreno X Y tama altura frecuencia=  (
 				ruidomin=terreno[i][j].pos.z
 			)
 			
-			/*for k=0 to escalon-1 do(
+			/*for k = 0 to (escalon - 1) do(
 				relleno=instance terreno[1][1]
 				relleno.pos.x=terreno[i][j].pos.x
 				relleno.pos.y=terreno[i][j].pos.y
@@ -274,13 +278,12 @@ fn crearTerreno X Y tama altura frecuencia=  (
 				ruidomin=terreno[i][j].pos.z
 			)*/
 			escalon=(terreno[i][j].pos.z)/intervalo
-			/*for k=0 to escalon-1 do(
-				relleno=instance terreno[1][1]
-				relleno.pos.x=terreno[i][j].pos.x
-				relleno.pos.y=terreno[i][j].pos.y
-				relleno.pos.z=tama*k
-			)*/
+			
 			terreno[i][j].pos.z=(int)escalon*tama
+			relleno=instance terreno[1][1]
+			relleno.pos.x=terreno[i][j].pos.x
+			relleno.pos.y=terreno[i][j].pos.y
+			relleno.pos.z=terreno[i][j].pos.z - tama
 		)
 	)
 
