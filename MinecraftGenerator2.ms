@@ -201,6 +201,7 @@ fn generaArboles numArboles tamaTronco tamaHojas = (
 )
 
 fn crearTerreno X Y tama altura frecuencia=  (
+	
 	semilla=random 5000 5300
 	script = dotNetObject "PerlinNoiseV2.Perlin" (semilla) (frecuencia)
 	posX = 0
