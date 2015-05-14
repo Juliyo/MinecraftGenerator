@@ -29,9 +29,10 @@ for i=1 to 6 do(
 		if i==1 then (
 			matGrass[i].diffusemap = bitmapTopGrass
 			matGrass[i].showInViewport = on
-				
+			
 			matHojas[i].diffusemap = bitmapHojas
 			matHojas[i].opacitymap = bitmapHojasAlpha
+			matHojas[i].twoSided = on
 			matHojas[i].showInViewport = on
 			
 			matTronco[i].diffusemap = bitmapLadoTronco
@@ -39,6 +40,7 @@ for i=1 to 6 do(
 		)else(
 			matHojas[i].diffusemap = bitmapHojas
 			matHojas[i].opacitymap = bitmapHojasAlpha
+			matHojas[i].twoSided = on
 			matHojas[i].showInViewport = on
 			
 			matTronco[i].diffusemap = bitmapLadoTronco
@@ -326,7 +328,6 @@ rollout arboles "Árboles" width:270 height:276
 	spinner spn8 "Número de árboles      " pos:[44,23] width:196 height:16 type:#integer
 	
 	on btn2 pressed do(
-		print("Hey")
 		generaArboles spn8.value spinerTronco.value spinerHojas.value
 	)
 )
