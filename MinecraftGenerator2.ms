@@ -205,10 +205,10 @@ fn generaArboles numArboles tamaTronco tamaHojas = (
 	)*/
 )
 
-fn crearTerreno X Y tama altura frecuencia=  (
+fn crearTerreno X Y tama altura frecuencia frecuencia2 frecuencia3=  (
 	
 	semilla=random 5000 5300
-	script = dotNetObject "PerlinNoiseV2.Perlin" (semilla) (frecuencia)
+	
 	posX = 0
 	posY = 0
 	ruido = 0.0
@@ -219,9 +219,9 @@ fn crearTerreno X Y tama altura frecuencia=  (
 		  append terreno #()
 		)
 		for j=1 to Y do(
-
-				 script2 = dotNetObject "PerlinNoiseV2.Perlin" (10*(sqrt 5330)) (5)
-				 script3 = dotNetObject "PerlinNoiseV2.Perlin" (5330*5330) (20)
+				script = dotNetObject "PerlinNoiseV2.Perlin" (semilla) (frecuencia)
+				 script2 = dotNetObject "PerlinNoiseV2.Perlin" (10*(sqrt semilla)) (frecuencia2)
+				 script3 = dotNetObject "PerlinNoiseV2.Perlin" (semilla*semilla) (frecuencia3)
 				 --print((12*(script.getNoiseLevelAtPosition i j))+(6*(script2.getNoiseLevelAtPosition i j))+(24*(script3.getNoiseLevelAtPosition i j)))
 				 ruido = (12*(script.getNoiseLevelAtPosition i j))+(6*(script2.getNoiseLevelAtPosition i j))+(24*(script3.getNoiseLevelAtPosition i j))
 			
@@ -241,7 +241,6 @@ fn crearTerreno X Y tama altura frecuencia=  (
 		posX = posX + tama
 		posY = 0
 	)
-	--intervalo=1.0/altura
 	
 		for i=1 to X do(
 		for j=1 to Y do(
@@ -255,30 +254,12 @@ fn crearTerreno X Y tama altura frecuencia=  (
 			if terreno[i][j].pos.z<ruidomin then(
 				ruidomin=terreno[i][j].pos.z
 			)
-			
-			/*for k = 0 to (escalon - 1) do(
-				relleno=instance terreno[1][1]
-				relleno.pos.x=terreno[i][j].pos.x
-				relleno.pos.y=terreno[i][j].pos.y
-				relleno.pos.z=tama*k
-			)*/
-			
 		)
 	)
 	pos= ruidomax - ruidomin
 	intervalo=(pos)/altura
 	for i=1 to X do(
 		for j=1 to Y do(
-			/*if i==1 and j==1 do(
-				ruidomin=terreno[i][j].pos.z
-				ruidomax=terreno[i][j].pos.z
-			)
-			if terreno[i][j].pos.z>ruidomax then(
-				ruidomax=terreno[i][j].pos.z
-			)
-			if terreno[i][j].pos.z<ruidomin then(
-				ruidomin=terreno[i][j].pos.z
-			)*/
 			escalon=(terreno[i][j].pos.z)/intervalo
 			
 			terreno[i][j].pos.z=(int)escalon*tama
@@ -294,18 +275,22 @@ texturaIconoTerreno = sysInfo.currentdir + "\\iconos\icoTerreno.png"
 rollout scriptFinal "Terreno" width:270 height:304
 (
 
-	GroupBox GrupoTerreno "Terreno" pos:[18,74] width:229 height:129
+	GroupBox GrupoTerreno "Terreno" pos:[18,74] width:229 height:170
 	label lbl1 "Dimensión X" pos:[38,96] width:68 height:17
 	label lbl2 "Dimensión Y" pos:[36,119] width:65 height:18
 	GroupBox grp2 "Bloques" pos:[21,24] width:225 height:41
-	button btn6 "Generar terreno" pos:[26,224] width:208 height:29
+	button btn6 "Generar terreno" pos:[26,255] width:208 height:29
 	spinner spinerTama "Tamaño de los cubos" pos:[49,40] width:169 height:16 type:#integer
 	spinner spinerX "" pos:[114,92] width:111 height:16 range:[0,1000,10] type:#integer
 	spinner spinerY "" pos:[114,116] width:109 height:16 range:[0,1000,10] type:#integer
 	label lbl18 "Altura" pos:[37,142] width:61 height:14
 	spinner spinnerAltura "" pos:[112,140] width:111 height:16 range:[0,1000,5] type:#integer
 	label label "Suavizado" pos:[35,169] width:63 height:15
-	spinner spinnerFreq "" pos:[113,168] width:107 height:16 range:[0,100,10] type:#integer scale:1
+	spinner spinnerFreq "" pos:[113,168] width:110 height:16 range:[0,100,10] type:#integer scale:1
+	label lbl5 "Suavizado 2" pos:[32,194] width:73 height:19
+	spinner spinnerFreq2 "" pos:[112,190] width:109 height:16
+	label lbl6 "Suavizado 3" pos:[33,214] width:63 height:13
+	spinner SpinnerFreq3 "" pos:[111,214] width:113 height:16
 	
 	on btn6 pressed do
 	(
@@ -314,7 +299,7 @@ rollout scriptFinal "Terreno" width:270 height:304
 		tama = spinerTama.value
 		tamaTerrenoX = spinerX.value
 		tamaTerrenoY = spinerY.value
-		crearTerreno spinerX.value spinerY.value spinerTama.value spinnerAltura.value spinnerFreq.value
+		crearTerreno spinerX.value spinerY.value spinerTama.value spinnerAltura.value spinnerFreq.value spinnerFreq2.value spinnerFreq3.value
 	)
 )
 
