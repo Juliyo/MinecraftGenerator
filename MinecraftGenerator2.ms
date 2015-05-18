@@ -205,10 +205,9 @@ fn generaArboles numArboles tamaTronco tamaHojas = (
 	)*/
 )
 
-fn crearTerreno X Y tama altura frecuencia frecuencia2 frecuencia3=  (
-	
+fn crearTerreno X Y tama altura frecuencia=  (
 	semilla=random 5000 5300
-	
+	script = dotNetObject "PerlinNoiseV2.Perlin" (semilla) (frecuencia)
 	posX = 0
 	posY = 0
 	ruido = 0.0
@@ -219,13 +218,8 @@ fn crearTerreno X Y tama altura frecuencia frecuencia2 frecuencia3=  (
 		  append terreno #()
 		)
 		for j=1 to Y do(
-				script = dotNetObject "PerlinNoiseV2.Perlin" (semilla) (frecuencia)
-				 script2 = dotNetObject "PerlinNoiseV2.Perlin" (10*(sqrt semilla)) (frecuencia2)
-				 script3 = dotNetObject "PerlinNoiseV2.Perlin" (semilla*semilla) (frecuencia3)
 				 --print((12*(script.getNoiseLevelAtPosition i j))+(6*(script2.getNoiseLevelAtPosition i j))+(24*(script3.getNoiseLevelAtPosition i j)))
-				 ruido = (12*(script.getNoiseLevelAtPosition i j))+(6*(script2.getNoiseLevelAtPosition i j))+(24*(script3.getNoiseLevelAtPosition i j))
-			
-				--ruido = 	script.getNoiseLevelAtPosition i j
+				 ruido = (script.getNoiseLevelAtPosition i j)
 				if i==1 and j==1 then(
 					terreno[i][j]=Box lengthsegs:1 widthsegs:1 heighsegs:1 length:tama width:tama height:tama pos:[posX ,posY,ruido]  mapcoords:on  material:matGrass
 				)else(
@@ -241,6 +235,7 @@ fn crearTerreno X Y tama altura frecuencia frecuencia2 frecuencia3=  (
 		posX = posX + tama
 		posY = 0
 	)
+	--intervalo=1.0/altura
 	
 		for i=1 to X do(
 		for j=1 to Y do(
@@ -254,6 +249,7 @@ fn crearTerreno X Y tama altura frecuencia frecuencia2 frecuencia3=  (
 			if terreno[i][j].pos.z<ruidomin then(
 				ruidomin=terreno[i][j].pos.z
 			)
+			
 		)
 	)
 	pos= ruidomax - ruidomin
@@ -261,7 +257,6 @@ fn crearTerreno X Y tama altura frecuencia frecuencia2 frecuencia3=  (
 	for i=1 to X do(
 		for j=1 to Y do(
 			escalon=(terreno[i][j].pos.z)/intervalo
-			
 			terreno[i][j].pos.z=(int)escalon*tama
 			relleno=instance terreno[1][1]
 			relleno.pos.x=terreno[i][j].pos.x
@@ -271,26 +266,107 @@ fn crearTerreno X Y tama altura frecuencia frecuencia2 frecuencia3=  (
 	)
 
 )
-texturaIconoTerreno = sysInfo.currentdir + "\\iconos\icoTerreno.png"
+fn gallinas cuenta=(
+	for i=1 to cuenta do(
+		ale1 = random 1 tamaTerrenoX
+		ale2 = random 1 tamaTerrenoY
+		aleTama= random 1 2
+		generarGallinas aleTama terreno[ale1][ale2].pos.x terreno[ale1][ale2].pos.y terreno[ale1][ale2].pos.z
+	)
+	
+)
+fn generarGallinas tama posX posY posZ=(
+	pata=#(#())
+	gallina=#(#(#()))
+	posXinicial=posX
+	posYinicial=posY
+	posX2=posX
+	posY2=posY
+	for w=1 to 4 do(
+		if w!=1 then(
+		  append pata #()
+		)
+		for i=1 to 6 do(
+			
+		  if(w < 4) then(
+			if(w==2 or w==3) then(
+				pata[w][i]=Box lengthsegs:1 widthsegs:1 heighsegs:1 length:tama width:tama height:5 pos:[posX,posY,posZ] mapcoords:on 
+			)
+			else(
+				if(i==2 or i==5) then(
+				pata[w][i]=Box lengthsegs:1 widthsegs:1 heighsegs:1 length:tama width:tama height:5 pos:[posX,posY,posZ] mapcoords:on 
+				)
+			)
+			
+		  )
+		  else(
+			  
+			  if(i==2 or i==5) then(
+				
+				 pata[w][i]=Box lengthsegs:1 widthsegs:1 heighsegs:1 length:tama width:tama height:5 pos:[posX,posY,posZ+(tama/2)] mapcoords:on 
+					  pata[w][i].rotation.x_rotation=90
+				  posX2=posX
+				  posY2=posY
+			  )
+			  
+		  )
+			
+			posX=posX+tama
+		)
+			posX=0
+			posY=posY+tama
+	)
+		
+	for z=1 to 4 do(
+	gallina[1][1][1]=Box lengthsegs:1 widthsegs:1 heighsegs:1 length:tama width:tama height:5 pos:[posX2,posY2,posZ+(tama/2)+tama] mapcoords:on
+	gallina[1][1][1].rotation.x_rotation=90
+	gallina[1][1][1]=Box lengthsegs:1 widthsegs:1 heighsegs:1 length:tama width:tama height:5 pos:[posX2-(tama*3),posY2,posZ+(tama/2)+tama] mapcoords:on
+	gallina[1][1][1].rotation.x_rotation=90
+		posZ=posZ+tama
+	)
+	l=tama*6
+	w=tama*6
+	h=tama*5
+	fff=tama*2
+	h2=h-fff
+	w2=w-fff
+	w3=tama*4
+	l3=tama*3
+	h3=tama*6
+	gallina[1][1][1]=Box lengthsegs:1 widthsegs:1 heighsegs:1 length:l width:w height:h pos:[posX2-(tama+tama/2),posY2,posZ+tama] mapcoords:on
+	gallina[1][1][1]=Box lengthsegs:1 widthsegs:1 heighsegs:1 length:w2 width:tama height:h2 pos:[posX2+(tama*2),posY2,posZ+tama*3] mapcoords:on
+  
+	gallina[1][1][1]=Box lengthsegs:1 widthsegs:1 heighsegs:1 length:w2 width:tama height:h2 pos:[posX2-(tama*5),posY2,posZ+tama*3] mapcoords:on
+	gallina[1][1][1]=Box lengthsegs:1 widthsegs:1 heighsegs:1 length:l3 width:w3 height:h3 pos:[posX2-tama*2+tama/2,posY2-tama*5+tama/2,posZ+tama*4] mapcoords:on
+		
+	h4=tama*2
+	l4=tama*2
+	w4=l4
+	gallina[1][1][1]=Box lengthsegs:1 widthsegs:1 heighsegs:1 length:w4 width:l4 height:h4 pos:[posX2-tama*2+tama/2,posY2-tama*6,posZ+tama*4] mapcoords:on
+	
+	h5=fff
+	w5=tama*4
+	l5=tama*2
+	
+	gallina[1][1][1]=Box lengthsegs:1 widthsegs:1 heighsegs:1 length:l5 width:w5 height:h5 pos:[posX2-tama*2+tama/2,posY2-tama*7,posZ+tama*6] mapcoords:on
+	
+	
+)
 rollout scriptFinal "Terreno" width:270 height:304
 (
 
-	GroupBox GrupoTerreno "Terreno" pos:[18,74] width:229 height:170
+	GroupBox GrupoTerreno "Terreno" pos:[18,74] width:229 height:129
 	label lbl1 "Dimensión X" pos:[38,96] width:68 height:17
 	label lbl2 "Dimensión Y" pos:[36,119] width:65 height:18
 	GroupBox grp2 "Bloques" pos:[21,24] width:225 height:41
-	button btn6 "Generar terreno" pos:[26,255] width:208 height:29
+	button btn6 "Generar terreno" pos:[26,224] width:208 height:29
 	spinner spinerTama "Tamaño de los cubos" pos:[49,40] width:169 height:16 type:#integer
 	spinner spinerX "" pos:[114,92] width:111 height:16 range:[0,1000,10] type:#integer
 	spinner spinerY "" pos:[114,116] width:109 height:16 range:[0,1000,10] type:#integer
 	label lbl18 "Altura" pos:[37,142] width:61 height:14
 	spinner spinnerAltura "" pos:[112,140] width:111 height:16 range:[0,1000,5] type:#integer
 	label label "Suavizado" pos:[35,169] width:63 height:15
-	spinner spinnerFreq "" pos:[113,168] width:110 height:16 range:[0,100,10] type:#integer scale:1
-	label lbl5 "Suavizado 2" pos:[32,194] width:73 height:19
-	spinner spinnerFreq2 "" pos:[112,190] width:109 height:16
-	label lbl6 "Suavizado 3" pos:[33,214] width:63 height:13
-	spinner SpinnerFreq3 "" pos:[111,214] width:113 height:16
+	spinner spinnerFreq "" pos:[113,168] width:107 height:16 range:[0,100,10] type:#integer scale:1
 	
 	on btn6 pressed do
 	(
@@ -299,7 +375,7 @@ rollout scriptFinal "Terreno" width:270 height:304
 		tama = spinerTama.value
 		tamaTerrenoX = spinerX.value
 		tamaTerrenoY = spinerY.value
-		crearTerreno spinerX.value spinerY.value spinerTama.value spinnerAltura.value spinnerFreq.value spinnerFreq2.value spinnerFreq3.value
+		crearTerreno spinerX.value spinerY.value spinerTama.value spinnerAltura.value spinnerFreq.value
 	)
 )
 
@@ -316,7 +392,17 @@ rollout arboles "Árboles" width:270 height:276
 		generaArboles spn8.value spinerTronco.value spinerHojas.value
 	)
 )
-
+rollout rolloutGallinas "Gallinas" width:270 height:200
+(
+	label nGallinas "Número Gallinas" pos:[9,17] width:89 height:25
+	spinner spinernGallinas "" pos:[115,16] width:123 height:16
+	button gGallinas "Generar Gallinas" pos:[51,107] width:131 height:40
+	
+	on gGallinas pressed do(
+		gallinas spinernGallinas.value
+	)
+)
 RolloutNuevoTemplate = newrolloutfloater "Minecraft Map Generator (MMP)" 270 550
 addrollout scriptFinal RolloutNuevoTemplate
 addrollout arboles RolloutNuevoTemplate
+addrollout rolloutGallinas RolloutNuevoTemplate
